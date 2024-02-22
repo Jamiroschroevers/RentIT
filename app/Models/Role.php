@@ -12,4 +12,10 @@ class Role extends Model
     const MONTEUR  = 3;
 
     use HasFactory;
+    protected $guarded = [];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
