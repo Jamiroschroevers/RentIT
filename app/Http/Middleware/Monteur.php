@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Role;
 
 class Monteur
 {
@@ -20,7 +21,7 @@ class Monteur
             return redirect()->route('login');
         }
 
-        if (!boolval(Auth::user()->role_id === 3)) {
+        if (!boolval(Auth::user()->role_id === Role::MONTEUR)) {
             return redirect()->route('dashboard');
         }
 

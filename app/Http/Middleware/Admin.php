@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Role;
 
 class Admin
 {
@@ -20,7 +21,7 @@ class Admin
             return redirect()->route('login');
         }
 
-        if (!boolval(Auth::user()->role_id === 1)) {
+        if (!boolval(Auth::user()->role_id === Role::ADMIN)) {
             return redirect()->route('dashboard');
         }
 
