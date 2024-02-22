@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class MalfunctionController extends Controller
 {
-    //
+    public function index()
+    {
+        return view('Storing');
+    }
 }
