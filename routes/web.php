@@ -4,6 +4,7 @@ use App\Http\Controllers\MalfunctionController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Malfunction;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PropertyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('/property', PropertyController::class);
+    Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
 });
 
 Route::resource('/Hstoring', MalfunctionController::class);
