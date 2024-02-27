@@ -68,13 +68,6 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $this->getAddress($request, $request->postal_code);
-        $jsonString = $data->getContent();
-        $dataArray = json_decode($jsonString, true);
-
-        $city = $dataArray['city'];
-        $street = $dataArray['street'];
-
         $request->validate([
             'street'       => 'required',
             'house_number' => 'required',
@@ -83,6 +76,13 @@ class PropertyController extends Controller
             'status_id'    => 'nullable',
             'tenant_id'    => 'nullable',
         ]);
+
+        $data = $this->getAddress($request, $request->postal_code);
+        $jsonString = $data->getContent();
+        $dataArray = json_decode($jsonString, true);
+
+        $city = $dataArray['city'];
+        $street = $dataArray['street'];
 
         $property               = new Property();
         $property->street       = $street;
@@ -125,13 +125,6 @@ class PropertyController extends Controller
      */
     public function update($id, Request $request)
     {
-        $data = $this->getAddress($request, $request->postal_code);
-        $jsonString = $data->getContent();
-        $dataArray = json_decode($jsonString, true);
-
-        $city = $dataArray['city'];
-        $street = $dataArray['street'];
-
         $request->validate([
             'street'       => 'required',
             'house_number' => 'required',
@@ -140,6 +133,13 @@ class PropertyController extends Controller
             'status_id'    => 'nullable',
             'tenant_id'    => 'nullable',
         ]);
+
+        $data = $this->getAddress($request, $request->postal_code);
+        $jsonString = $data->getContent();
+        $dataArray = json_decode($jsonString, true);
+
+        $city = $dataArray['city'];
+        $street = $dataArray['street'];
 
         if (Property::where('id', $id)->exists()) {
             $property               = Property::findOrFail($id);

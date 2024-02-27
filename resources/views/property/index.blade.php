@@ -59,7 +59,7 @@
                         </div>
                         <p class="text-gray-600 mb-2">{{ $property->street }}, {{ $property->postal_code }}</p>
                         <p class="text-gray-600 mb-2">Huisnummer: {{ $property->house_number }}</p>
-                        <p class="text-gray-600 mb-2">Status: {{ $property->status_id }}</p>
+                        <p class="text-gray-600 mb-2">Status: {{ $property->status->name }}</p>
                         <p class="text-gray-600 mb-2">Huurder: {{ $property->tenant_id !== null ? $property->tenant_id : 'Nog geen huurder toegevoegd' }}</p>
                         <a class="flex justify-end" href="{{ route('property.show', $property) }}">
                             <x-primary-button class="text-white" type="submit">

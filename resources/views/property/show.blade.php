@@ -26,7 +26,7 @@
                 <p class="mb-2"><strong>Huisnummer:</strong> {{ $property->house_number }}</p>
                 <p class="mb-2"><strong>Postcode:</strong> {{ $property->postal_code }}</p>
                 <p class="mb-2"><strong>Stad:</strong> {{ $property->city }}</p>
-                <p class="mb-2"><strong>Status:</strong> {{ $property->status_id }}</p>
+                <p class="mb-2"><strong>Status:</strong> {{ $property->status->name }}</p>
                 <p class="mb-4"><strong>Huurder:</strong> {{ $property->tenant_id }}</p>
                 <div class="flex justify-end">
                     <form action="{{ route('property.destroy', $property) }}" method="POST">
