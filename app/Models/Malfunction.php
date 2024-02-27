@@ -17,11 +17,11 @@ class Malfunction extends Model
 
     public function Tenants()
     {
-        return $this->belongsTo(Tenant::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 
     public function Status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }

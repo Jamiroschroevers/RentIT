@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/property', PropertyController::class);
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
+    Route::middleware('admin')->group(function () {
+        Route::get('AStoring', [MalfunctionController::class, 'indexAdmin'])->name('Astoring.index');
+    });
 });
 
 Route::resource('/Hstoring', MalfunctionController::class);
