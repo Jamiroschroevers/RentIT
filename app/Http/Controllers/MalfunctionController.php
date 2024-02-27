@@ -17,6 +17,12 @@ class MalfunctionController extends Controller
         return view('Storing', compact('properties', 'statuss'));
     }
 
+    public function indexAdmin()
+    {
+        $malfunctions = Malfunction::query()->orderBy('emergency', 'desc')->get();
+        return view('StoringOverzicht', compact('malfunctions'));
+    }
+
     public function store(Request $request)
     {
         request()->validate([
