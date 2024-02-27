@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
+    const FOR_RENT = 1;
+    const IN_USE   = 2;
+    const RESERVED = 3;
+    const OPEN     = 4;
+    const PLANNED  = 5;
+    const CLOSED   = 6;
+
     use HasFactory;
     protected $guarded = [];
 
