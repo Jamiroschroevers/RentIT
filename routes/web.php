@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MalfunctionController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Malfunction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
 
@@ -17,7 +19,7 @@ use App\Http\Controllers\PropertyController;
 
 Route::get('/', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,5 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/property', PropertyController::class);
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
 });
+
+Route::resource('/Hstoring', MalfunctionController::class);
 
 require __DIR__ . '/auth.php';
