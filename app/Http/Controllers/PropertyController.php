@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\Role;
 use App\Models\Status;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -14,44 +16,16 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $property = Property::query();
+        $admin = Role::ADMIN;
 
-        // Ophalen van de opgeslagen status uit de sessie
-        $status = session('status');
-
-        if (request()->has('query')) {
-            $query = request('query');
-
-            $property->where(function ($queryBuilder) use ($query, $status) {
-                if (!empty($status)) {
-                    $queryBuilder->where('status_id', 'LIKE', $status);
-                } else {
-                    $queryBuilder
-                        ->where('street', 'LIKE', "%$query%")
-                        ->orWhere('house_number', 'LIKE', "%$query%")
-                        ->orWhere('postal_code', 'LIKE', "%$query%")
-                        ->orWhere('city', 'LIKE', "%$query%")
-                        ->orWhere('tenant_id', 'LIKE', "%$query%");
-                }
-            });
-        }
-
-        if (request()->has('status_filter')) {
-            $statusFilter = request('status_filter');
-
-            $property->where('status_id', 'like', "%$statusFilter%");
-
-            // Opslaan van de status in de sessie
-            session(['status' => $statusFilter]);
-        }
-
-        $properties = $property->get();
+        $properties = Property::all();
 
         $statuses = DB::table('statuses')->whereIn('id', [1, 2, 3])->get();
 
         return view('property.index', [
             'properties' => $properties,
-            'statuses' => $statuses,
+            'statuses'   => $statuses,
+            'admin'      => $admin,
         ]);
     }
 
@@ -62,7 +36,9 @@ class PropertyController extends Controller
     {
         $statuses = Status::whereIn('id', [1, 2, 3])->get();
 
-        return view('property.create', compact('statuses'));
+        return view('property.create', [
+            'statuses' => $statuses,
+        ]);
     }
 
     /**
@@ -79,11 +55,11 @@ class PropertyController extends Controller
             'tenant_id' => 'nullable',
         ]);
 
-        $data = $this->getAddress($request, $request->postal_code);
+        $data       = $this->getAddress($request->postal_code);
         $jsonString = $data->getContent();
-        $dataArray = json_decode($jsonString, true);
+        $dataArray  = json_decode($jsonString, true);
 
-        $city = $dataArray['city'];
+        $city   = $dataArray['city'];
         $street = $dataArray['street'];
 
         $property = new Property();
@@ -95,14 +71,15 @@ class PropertyController extends Controller
         $property->save();
 
         return redirect()->route('property.index')
-            ->with('message', 'Succesvol aangemaakt!');
+                         ->with('message', 'Succesvol aangemaakt!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
+    public function show(Property $property)
+    { 
+        $admin = Role::ADMIN;
         $property = Property::findOrFail($id);
         $statuses = DB::table('statuses')->whereIn('id', [1, 2, 3])->get();
         $defaultStatus = $statuses->first(); // Haal de eerste status op
@@ -111,6 +88,7 @@ class PropertyController extends Controller
             'property' => $property,
             'statuses' => $statuses,
             'defaultStatus' => $defaultStatus,
+          'admin'    => $admin,
         ]);
     }
 
@@ -118,10 +96,8 @@ class PropertyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Property $property)
     {
-        $property = Property::findOrFail($id);
-
         return view('property.edit', [
             'property' => $property,
         ]);
@@ -130,7 +106,7 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id, Request $request)
+    public function update(Property $property, Request $request)
     {
         $request->validate([
             'street' => 'required',
@@ -141,16 +117,15 @@ class PropertyController extends Controller
             'tenant_id' => 'nullable',
         ]);
 
-        $data = $this->getAddress($request, $request->postal_code);
+        $data       = $this->getAddress($request->postal_code);
         $jsonString = $data->getContent();
-        $dataArray = json_decode($jsonString, true);
+        $dataArray  = json_decode($jsonString, true);
 
-        $city = $dataArray['city'];
+        $city   = $dataArray['city'];
         $street = $dataArray['street'];
 
-        if (Property::where('id', $id)->exists()) {
-            $property = Property::findOrFail($id);
-            $property->street = $street;
+        if (Property::where('id', $property)->exists()) {
+            $property->street       = $street;
             $property->house_number = $request->house_number;
             $property->postal_code = $request->postal_code;
             $property->city = $city;
@@ -158,23 +133,21 @@ class PropertyController extends Controller
         }
 
         return redirect()->route('property.show', $id)
-            ->with('message', 'Succesvol bijgewerkt!');
+                         ->with('message', 'Succesvol bijgewerkt!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Property $property)
     {
-        $property = Property::findOrFail($id);
-
         $property->delete();
 
         return redirect()->route('property.index')
-            ->with('message', 'Succesvol verwijderd!');
+                         ->with('message', 'Succesvol verwijderd!');
     }
 
-    public function getAddress(Request $request, $postcode): \Illuminate\Http\JsonResponse
+    public function getAddress($postcode): JsonResponse
     {
         $postcode = str_replace(' ', '', $postcode);
         $client = new Client();

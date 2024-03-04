@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\MalfunctionController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Malfunction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\TenantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +20,7 @@ use App\Http\Controllers\PropertyController;
 
 Route::get('/', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -25,8 +28,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/property', PropertyController::class);
+    Route::get('/tenant/show/{tenant}', [TenantController::class, 'show'])->name('tenant.show');
+    Route::get('/tenant/{property}', [TenantController::class, 'create'])->name('tenant.create');
+    Route::post('/tenant/{property}', [TenantController::class, 'store'])->name('tenant.store');
+    Route::get('/test', [TenantController::class, 'test'])->name('test');
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
     Route::post('/save_property/{property}', [PropertyController::class, 'save_property']);
+  
+    //admin
+    Route::middleware('admin')->group(function () {
+        Route::get('AStoring', [MalfunctionController::class, 'indexAdmin'])->name('Astoring.index');
+    });
 });
+
+Route::resource('/Hstoring', MalfunctionController::class);
 
 require __DIR__ . '/auth.php';

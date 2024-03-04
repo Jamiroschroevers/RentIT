@@ -17,6 +17,6 @@ class Property extends Model
 
     public function Tenants()
     {
-        return $this->belongsTo(Tenant::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 }
