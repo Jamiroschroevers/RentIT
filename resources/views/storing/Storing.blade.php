@@ -18,7 +18,7 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
                         <div class="mt-4">
-                            <label for="space" class="text-black">Type ruimte:</label>
+                            <label for="space" class="text-black">Type ruimte:</label><br>
                             <select class="border-gray-300 rounded-md shadow-sm" name="space">
                                 <option value="">-- option select --</option>
                                 <option value="Gemeenschappelijke ruimte">Gemeenschappelijke ruimte</option>
