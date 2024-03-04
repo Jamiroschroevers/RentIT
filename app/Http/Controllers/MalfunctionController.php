@@ -14,13 +14,13 @@ class MalfunctionController extends Controller
     {
         $properties = Property::all();
         $statuss = Status::whereIn('id', [4, 5, 6])->get();
-        return view('Storing', compact('properties', 'statuss'));
+        return view('storing.Storing', compact('properties', 'statuss'));
     }
 
     public function indexAdmin()
     {
         $malfunctions = Malfunction::query()->orderBy('emergency', 'desc')->get();
-        return view('StoringOverzicht', compact('malfunctions'));
+        return view('storing.StoringOverzicht', compact('malfunctions'));
     }
 
     public function store(Request $request)

@@ -199,7 +199,7 @@
                                     </span>
                                 </div>
                                 <a class="flex justify-end" href="{{ route('property.show', $property) }}">
-                                    <span class="see-more">Zie Meer</span>
+                                    <span class="see-more">See More</span>
                                 </a>
                             </div>
                         </div>
