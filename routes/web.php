@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/property', PropertyController::class);
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
+    Route::post('/save_property/{property}', [PropertyController::class, 'save_property']);
 });
 
 require __DIR__ . '/auth.php';
