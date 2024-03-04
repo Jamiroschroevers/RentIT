@@ -151,8 +151,8 @@
 
                 .date-box {
                     position   : absolute;
-                    top        : 30px;
-                    right      : 30px;
+                    top        : 0px;
+                    right      : 20px;
                     height     : 60px;
                     width      : 60px;
                     background : white;
@@ -198,7 +198,7 @@
                                         <img src="{{ asset('img/icons8-house.png') }}" width="36px" height="36px">
                                     </span>
                                 </div>
-                                <a class="flex justify-end" href="{{ route('property.show', $property) }}">
+                                <a class="flex justify-end" href="{{ route('property.show', $property->id) }}">
                                     <span class="see-more">Zie Meer</span>
                                 </a>
                             </div>

@@ -5,7 +5,7 @@
             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor" viewBox="0 0 20 20">
                 <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span class="sr-only">Info</span>
             <div>
@@ -22,7 +22,7 @@
                 </div>
             </h1>
             <div class="p-6">
-                @if(Auth::user()->role_id !== $admin)
+                @if(Auth::user()->role_id === $admin)
                     <form action="{{ route('property.update', $property) }}" method="post" class=""
                           enctype="multipart/form-data">
                         @csrf
@@ -72,13 +72,17 @@
                         <div class="text-red-700 mt-2">{{ $message }}</div>
                         @enderror
 
-
                         <div class="flex items-center mb-4">
                             <strong class="mr-2">Huurder:</strong>
-                            <p class="m-0">{{ $property->tenant_id }}</p>
+                            @if($property->tenant_id === null)
+                                <a href="{{ route('tenant.create', $property) }}">
+                                    <x-primary-button class="">Huurder toevoegen</x-primary-button>
+                                </a>
+                            @else
+                                <p class="m-0">{{ $property->tenant_id }}</p>
+                            @endif
                         </div>
                         <div id="error-message" class="text-red-700 mt-2"></div>
-
                         <div class="flex justify-end">
                             <form action="{{ route('property.destroy', $property) }}" method="POST">
                                 @csrf
@@ -86,70 +90,58 @@
                                 <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
                             </form>
                         </div>
-                        @else
-                            <p class="mb-2"><strong>Straat:</strong> {{ $property->street }}</p>
-                            <p class="mb-2"><strong>Huisnummer:</strong> {{ $property->house_number }}</p>
-                            <p class="mb-2"><strong>Postcode:</strong> {{ $property->postal_code }}</p>
-                            <p class="mb-2"><strong>Stad:</strong> {{ $property->city }}</p>
-                            <p class="mb-2"><strong>Status:</strong> {{ $property->status->name }}</p>
-                            <p class="mb-4"><strong>Huurder:</strong> {{ $property->tenant_id }}</p>
-                     @if(Auth::user()->role_id === $admin)
-                    @if($property->tenant_id === null)
-                        <a href="{{ route('tenant.create', $property) }}">
-                            <x-primary-button class="">Huurder toevoegen</x-primary-button>
-                        </a>
-                    @endif
-                    <div class="flex justify-end">
-                        <form action="{{ route('property.destroy', $property) }}" method="POST">
-                            <a href="{{ route('property.edit', $property) }}" class="text-blue-500 hover:text-blue-700 text-sm mr-4">Edit</a>
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
-                        </form>
-                    </div>
+                    </form>
+
+                @else
+                    <p class="mb-2"><strong>Straat:</strong> {{ $property->street }}</p>
+                    <p class="mb-2"><strong>Huisnummer:</strong> {{ $property->house_number }}</p>
+                    <p class="mb-2"><strong>Postcode:</strong> {{ $property->postal_code }}</p>
+                    <p class="mb-2"><strong>Stad:</strong> {{ $property->city }}</p>
+                    <p class="mb-2"><strong>Status:</strong> {{ $property->status->name }}</p>
+                    <p class="mb-4"><strong>Huurder:</strong> {{ $property->tenant_id }}</p>
                 @endif
             </div>
         </div>
     </article>
     <script>
         function save_field(fieldName) {
-            const field = document.getElementById(fieldName).value;
-            const errorMessageElement = document.getElementById('error-message');
-            var propertyId = "{{ $property->id }}";
+            const field               = document.getElementById(fieldName).value
+            const errorMessageElement = document.getElementById('error-message')
+            var propertyId            = "{{ $property->id }}"
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/save_property/' + propertyId, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-            xhr.onload = function () {
-                errorMessageElement.textContent = xhr.status === 200 ? '' : 'Er is een fout opgetreden bij het opslaan van de stad.';
-            };
+            var xhr = new XMLHttpRequest()
+            xhr.open('POST', '/save_property/' + propertyId, true)
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}')
+            xhr.onload  = function () {
+                errorMessageElement.textContent = xhr.status === 200 ? '' : 'Er is een fout opgetreden bij het opslaan van de stad.'
+            }
             xhr.onerror = function () {
-                errorMessageElement.textContent = 'Er is een fout opgetreden bij het opslaan van de stad.';
-            };
-            xhr.send(JSON.stringify({field: field, fieldName: fieldName}));
+                errorMessageElement.textContent = 'Er is een fout opgetreden bij het opslaan van de stad.'
+            }
+            xhr.send(JSON.stringify({field: field, fieldName: fieldName}))
         }
 
         document.getElementById('postal_code').addEventListener('blur', function () {
-            save_field('postal_code');
-        });
+            save_field('postal_code')
+        })
 
         document.getElementById('street').addEventListener('blur', function () {
-            save_field('street');
-        });
+            save_field('street')
+        })
 
         document.getElementById('city').addEventListener('blur', function () {
-            save_field('city');
-        });
+            save_field('city')
+        })
 
         document.getElementById('house_number').addEventListener('blur', function () {
-            save_field('house_number');
-        });
+            save_field('house_number')
+        })
 
         // Status AJAX
         document.getElementById('status_filter').addEventListener('change', function () {
-            save_field('status_filter');
-        });
+            save_field('status_filter')
+        })
     </script>
 
 </x-app-layout>

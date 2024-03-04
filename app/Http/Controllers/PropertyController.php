@@ -47,12 +47,12 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'street' => 'required',
+            'street'       => 'required',
             'house_number' => 'required',
-            'postal_code' => 'required',
-            'city' => 'required',
-            'status_id' => 'nullable',
-            'tenant_id' => 'nullable',
+            'postal_code'  => 'required',
+            'city'         => 'required',
+            'status_id'    => 'nullable',
+            'tenant_id'    => 'nullable',
         ]);
 
         $data       = $this->getAddress($request->postal_code);
@@ -62,12 +62,12 @@ class PropertyController extends Controller
         $city   = $dataArray['city'];
         $street = $dataArray['street'];
 
-        $property = new Property();
-        $property->street = $street;
+        $property               = new Property();
+        $property->street       = $street;
         $property->house_number = $request->house_number;
-        $property->postal_code = $request->postal_code;
-        $property->city = $city;
-        $property->status_id = Status::FOR_RENT;
+        $property->postal_code  = $request->postal_code;
+        $property->city         = $city;
+        $property->status_id    = Status::FOR_RENT;
         $property->save();
 
         return redirect()->route('property.index')
@@ -77,21 +77,20 @@ class PropertyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Property $property)
-    { 
-        $admin = Role::ADMIN;
-        $property = Property::findOrFail($id);
-        $statuses = DB::table('statuses')->whereIn('id', [1, 2, 3])->get();
-        $defaultStatus = $statuses->first(); // Haal de eerste status op
+    public function show($id)
+    {
+        $admin         = Role::ADMIN;
+        $property      = Property::findOrFail($id);
+        $statuses      = DB::table('statuses')->whereIn('id', [1, 2, 3])->get();
+        $defaultStatus = $statuses->first();
 
         return view('property.show', [
-            'property' => $property,
-            'statuses' => $statuses,
+            'property'      => $property,
+            'statuses'      => $statuses,
             'defaultStatus' => $defaultStatus,
-          'admin'    => $admin,
+            'admin'         => $admin,
         ]);
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -109,12 +108,12 @@ class PropertyController extends Controller
     public function update(Property $property, Request $request)
     {
         $request->validate([
-            'street' => 'required',
+            'street'       => 'required',
             'house_number' => 'required',
-            'postal_code' => 'required',
-            'city' => 'required',
-            'status_id' => 'nullable',
-            'tenant_id' => 'nullable',
+            'postal_code'  => 'required',
+            'city'         => 'required',
+            'status_id'    => 'nullable',
+            'tenant_id'    => 'nullable',
         ]);
 
         $data       = $this->getAddress($request->postal_code);
@@ -127,8 +126,8 @@ class PropertyController extends Controller
         if (Property::where('id', $property)->exists()) {
             $property->street       = $street;
             $property->house_number = $request->house_number;
-            $property->postal_code = $request->postal_code;
-            $property->city = $city;
+            $property->postal_code  = $request->postal_code;
+            $property->city         = $city;
             $property->save();
         }
 
@@ -150,8 +149,8 @@ class PropertyController extends Controller
     public function getAddress($postcode): JsonResponse
     {
         $postcode = str_replace(' ', '', $postcode);
-        $client = new Client();
-        $url = 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free';
+        $client   = new Client();
+        $url      = 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free';
 
         try {
             $response = $client->request('GET', $url, [
@@ -165,7 +164,7 @@ class PropertyController extends Controller
 
                 $data = json_decode($body, true);
 
-                $city = $data['response']['docs'][0]['woonplaatsnaam'];
+                $city   = $data['response']['docs'][0]['woonplaatsnaam'];
                 $street = $data['response']['docs'][0]['straatnaam'];
 
                 return response()->json(['city' => $city, 'street' => $street]);
@@ -175,13 +174,12 @@ class PropertyController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
     }
 
     public function save_property(Request $request, Property $property)
     {
         $atributer = $request->fieldName;
-        $field = $request->field;
+        $field     = $request->field;
         try {
             if ($atributer === 'status_filter') {
                 $property->status_id = $field;
