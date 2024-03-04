@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/tenant/{property}', [TenantController::class, 'store'])->name('tenant.store');
     Route::get('/test', [TenantController::class, 'test'])->name('test');
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
-
+    Route::post('/save_property/{property}', [PropertyController::class, 'save_property']);
+  
     //admin
     Route::middleware('admin')->group(function () {
         Route::get('AStoring', [MalfunctionController::class, 'indexAdmin'])->name('Astoring.index');
