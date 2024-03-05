@@ -23,7 +23,7 @@ class TenantController extends Controller
             'firstname'   => 'required',
             'lastname'    => 'required',
             'birthday'    => 'required',
-            'email'       => 'required|email|unique:tenants,email',
+            'email'       => 'required|email',
             'phonenumber' => 'required',
         ]);
 
