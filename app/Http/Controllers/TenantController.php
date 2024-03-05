@@ -63,16 +63,4 @@ class TenantController extends Controller
             'property' => $property,
         ]);
     }
-
-    public function test()
-    {
-        $property = Property::all();
-        $statuses = DB::table('statuses')->whereIn('id', [1, 2, 3])->get();
-
-        return view('test', [
-            'properties' => $property,
-            'statuses'   => $statuses,
-
-        ]);
-    }
 }
