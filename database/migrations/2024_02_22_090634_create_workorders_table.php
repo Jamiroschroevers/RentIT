@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('workorders', function (Blueprint $table) {
             $table->id();
-            $table->string('timeregistration');
-            $table->decimal('price', 9, 3);
-            $table->string('comments');
+            $table->string('timeregistration')->nullable();
+            $table->string('signature')->nullable();
+            $table->decimal('price', 9, 3)->nullable();
+            $table->string('comments')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('MH_id')->nullable();

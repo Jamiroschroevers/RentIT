@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Malfunction;
 use App\Models\MalfunctionHandling;
+use App\Models\Workorder;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,18 @@ class MalfunctionHandlingController extends Controller
             $query->where('id', $malfunction->id);
         })->first();
 
+        if (isset($images)) {
+            $storing->save();
+        }
+        foreach ($images as $image) {
+            $imageNewFileName = time() . random_int(1, 99) . '.' . $image->extension();
+            $image->storeAs('public', $imageNewFileName);
+
+            $image        = new Image();
+            $image->name  = $imageNewFileName;
+            $image->url   = 'storage/';
+            $image->MH_id = $storing->id;
+            $image->save();
         $malfunctionHandling->activities       = $request->activities;
         $malfunctionHandling->description = $request->description;
         $malfunctionHandling->material = $request->material;

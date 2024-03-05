@@ -3,6 +3,7 @@
 use App\Http\Controllers\MalfunctionController;
 use App\Http\Controllers\MalfunctionHandlingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WorkorderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\TenantController;
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/property', PropertyController::class);
+    Route::get('/workorder', [WorkorderController::class, 'index'])->name('workorder.index');
+    Route::post('/workorder/{workorder}', [WorkorderController::class, 'store'])->name('workorder.store');
+    Route::get('/workorder/show/{workorder}', [WorkorderController::class, 'show']);
     Route::get('/tenant/show/{tenant}', [TenantController::class, 'show'])->name('tenant.show');
     Route::get('/tenant/{property}', [TenantController::class, 'create'])->name('tenant.create');
     Route::post('/tenant/{property}', [TenantController::class, 'store'])->name('tenant.store');

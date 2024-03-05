@@ -8,6 +8,7 @@ use App\Models\Property;
 use App\Models\Status;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Models\Workorder;
 use App\Rules\ExistingTenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,17 +38,24 @@ class MalfunctionController extends Controller
     public function storeAdmin(Request $request, Malfunction $malfunction)
     {
         request()->validate([
-            'monteur'       => ['required']
+            'monteur' => ['required'],
         ]);
 
-        $storingHandeling = new MalfunctionHandling();
+        $storingHandeling                 = new MalfunctionHandling();
         $storingHandeling->malfunction_id = $malfunction->id;
-        $storingHandeling->user_id = $request->monteur;
+        $storingHandeling->user_id        = $request->monteur;
         $storingHandeling->save();
 
         // Status Updaten
         $malfunction->status_id = Status::PLANNED;
         $malfunction->save();
+
+        //workorder
+        $workorder            = new Workorder();
+        $workorder->user_id   = $storingHandeling->user_id;
+        $workorder->MH_id     = $storingHandeling->id;
+        $workorder->tenant_id = $malfunction->tenant_id;
+        $workorder->save();
 
         return redirect()->route('Astoring.index');
     }
