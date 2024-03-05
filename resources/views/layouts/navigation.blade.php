@@ -158,6 +158,11 @@
                                 {{ __('Storing overzicht') }}
                             </x-nav-link>
                         @endif
+                        @if (Auth::check() && Auth::user()->role_id === 3)
+                            <x-nav-link style="animation-delay: 0.4s" :href="route('workorder.index')" :active="request()->routeIs('workorder.index')">
+                                {{ __('Werkbon overzicht') }}
+                            </x-nav-link>
+                        @endif
                         <x-nav-link style="animation-delay: 0.5s" :href="route('property.index')" :active="request()->routeIs('property.index')">
                             {{ __('Huurwoningen') }}
                         </x-nav-link>

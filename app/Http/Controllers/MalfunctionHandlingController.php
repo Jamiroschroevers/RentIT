@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Malfunction;
 use App\Models\MalfunctionHandling;
+use App\Models\Workorder;
 use Illuminate\Http\Request;
 
 class MalfunctionHandlingController extends Controller
@@ -42,7 +43,7 @@ class MalfunctionHandlingController extends Controller
 
             $image        = new Image();
             $image->name  = $imageNewFileName;
-            $image->url  = 'storage/';
+            $image->url   = 'storage/';
             $image->MH_id = $storing->id;
             $image->save();
         }

@@ -12,16 +12,16 @@ class Workorder extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function MalfunctionsHandling()
     {
-        return $this->belongsTo(MalfunctionHandling::class);
+        return $this->belongsTo(MalfunctionHandling::class, 'MH_id');
     }
 
     public function Tenants()
     {
-        return $this->belongsTo(Tenant::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 }
