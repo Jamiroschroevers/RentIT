@@ -13,6 +13,6 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
-        Tenant::factory(10)->create();
+        //
     }
 }

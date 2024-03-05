@@ -131,7 +131,7 @@ class PropertyController extends Controller
             $property->save();
         }
 
-        return redirect()->route('property.show', $id)
+        return redirect()->route('property.show', $property)
                          ->with('message', 'Succesvol bijgewerkt!');
     }
 

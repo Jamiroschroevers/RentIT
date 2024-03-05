@@ -71,26 +71,25 @@
                         @error('status_filter')
                         <div class="text-red-700 mt-2">{{ $message }}</div>
                         @enderror
-
-                        <div class="flex items-center mb-4">
-                            <strong class="mr-2">Huurder:</strong>
-                            @if($property->tenant_id === null)
-                                <a href="{{ route('tenant.create', $property) }}">
-                                    <x-primary-button class="">Huurder toevoegen</x-primary-button>
-                                </a>
-                            @else
-                                <p class="m-0">{{ $property->tenant_id }}</p>
-                            @endif
-                        </div>
-                        <div id="error-message" class="text-red-700 mt-2"></div>
-                        <div class="flex justify-end">
-                            <form action="{{ route('property.destroy', $property) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
-                            </form>
-                        </div>
                     </form>
+                    <div class="flex items-center mb-4">
+                        <strong class="mr-2">Huurder:</strong>
+                        @if($property->tenant_id === null)
+                            <a href="{{ route('tenant.create', $property) }}">
+                                <x-primary-button class="">Huurder toevoegenn</x-primary-button>
+                            </a>
+                        @else
+                            <p class="m-0">{{ $property->tenant_id }}</p>
+                        @endif
+                    </div>
+                    <div id="error-message" class="text-red-700 mt-2"></div>
+                    <div class="flex justify-end">
+                        <form action="{{ route('property.destroy', $property) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                        </form>
+                    </div>
 
                 @else
                     <p class="mb-2"><strong>Straat:</strong> {{ $property->street }}</p>
@@ -138,7 +137,6 @@
             save_field('house_number')
         })
 
-        // Status AJAX
         document.getElementById('status_filter').addEventListener('change', function () {
             save_field('status_filter')
         })
