@@ -1,4 +1,83 @@
 <x-app-layout>
+    <style>
+        .input-enabled {
+            background-color : #fff;
+        }
+
+        .input-disabled {
+            background-color : #ffeeba;
+        }
+
+        .input {
+            border           : 2px solid transparent;
+            outline          : none;
+            overflow         : hidden;
+            background-color : #F3F3F3;
+            transition       : all 0.5s;
+        }
+
+        .input:hover,
+        .input:focus {
+            border           : 2px solid #FF1E1F;
+            box-shadow       : 0px 0px 0px 7px rgb(255, 30, 31, 20%);
+            background-color : white;
+        }
+
+        .button {
+            --color          : #FF1E1F;
+            padding          : 0.4em 0.7em;
+            background-color : transparent;
+            border-radius    : .3em;
+            position         : relative;
+            overflow         : hidden;
+            cursor           : pointer;
+            transition       : .5s;
+            font-weight      : 400;
+            font-size        : 17px;
+            border           : 1px solid;
+            font-family      : inherit;
+            text-transform   : uppercase;
+            color            : var(--color);
+            z-index          : 1;
+        }
+
+        .button::before, .button::after {
+            content          : '';
+            display          : block;
+            width            : 50px;
+            height           : 50px;
+            transform        : translate(-50%, -50%);
+            position         : absolute;
+            border-radius    : 50%;
+            z-index          : -1;
+            background-color : var(--color);
+            transition       : 1s ease;
+        }
+
+        .button::before {
+            top  : -1em;
+            left : -1em;
+        }
+
+        .button::after {
+            left : calc(100% + 1em);
+            top  : calc(100% + 1em);
+        }
+
+        .button:hover::before, .button:hover::after {
+            height : 410px;
+            width  : 410px;
+        }
+
+        .button:hover {
+            color : rgb(255, 255, 255);
+        }
+
+        .button:active {
+            filter : brightness(.8);
+        }
+
+    </style>
     <div class="container mx-auto py-12">
         <article class="bg-white shadow-md rounded-lg w-4/6 p-8 mx-auto flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8">
             <div>
@@ -37,9 +116,8 @@
                     <div class="text-red-700 mt-2">{{ $message }}</div>
                     @enderror
 
-                    <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Aanmaken
+                    <button class="button mt-4">
+                        Toevoegen
                     </button>
                 </form>
             </div>
