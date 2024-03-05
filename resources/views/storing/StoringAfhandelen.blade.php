@@ -1,3 +1,4 @@
+@props(['malfunctionHandling' => null])
 <x-app-layout>
     <style>
         .input-enabled {
@@ -92,39 +93,49 @@
                             Storing Opnieuw plannen
                         </button>
                     </form>
-                    <form action="{{ route('StoringH.store') }}" method="post" class="mt-4 flex flex-col"
-                        enctype="multipart/form-data">
+                    <form
+                        action="{{ $malfunctionHandling ? route('StoringH.update', $malfunctionHandling->id) : 'StoringH.store', $malfunctionHandling->id }}"
+                        method="post" class="mt-4 flex flex-col" enctype="multipart/form-data">
                         @csrf
+                        @method($malfunction ? 'put' : 'post')
                         <label for="description">Beschrijving:</label>
                         <textarea class="text-black border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm input"
-                            name="description" id="description" required></textarea>
+                            name="description" id="description" required>{{ $malfunctionHandling ? old('description', $malfunctionHandling->description) : old('description') }}</textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
 
                         <label class="mt-4" for="activities">Activiteiten:</label>
                         <textarea class="text-black border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm input"
-                            name="activities" id="activities" required></textarea>
+                            name="activities" id="activities" required>{{ $malfunctionHandling ? old('activities', $malfunctionHandling->activities) : old('activities') }}</textarea>
                         <x-input-error :messages="$errors->get('activities')" class="mt-2" />
 
                         <label class="mt-4" for="mileage">Kilometerstand:</label>
-                        <x-text-input class="text-black mb-4 input" name="mileage" id="mileage" required />
+                        <x-text-input class="text-black mb-4 input"
+                            value="{{ $malfunctionHandling ? old('mileage', $malfunctionHandling->mileage) : old('mileage') }}"
+                            name="mileage" id="mileage" required />
                         <x-input-error :messages="$errors->get('mileage')" class="mt-2" />
 
                         <div class="flex justify-between">
                             <div>
                                 <label class="mt-4" for="material">Materialen:</label>
-                                <x-text-input class="text-black input" name="material" id="material" required />
+                                <x-text-input class="text-black input" name="material"
+                                    value="{{ $malfunctionHandling ? old('material', $malfunctionHandling->material) : old('material') }}"
+                                    id="material" required />
                                 <x-input-error :messages="$errors->get('material')" class="mt-2" />
                             </div>
 
                             <div>
                                 <label class="mt-4" for="Hoeveelheid">Hoeveelheid:</label>
-                                <x-text-input class="text-black input" name="Hoeveelheid" id="Hoeveelheid" required />
+                                <x-text-input class="text-black input" name="Hoeveelheid"
+                                    value="{{ $malfunctionHandling ? old('Hoeveelheid', $malfunctionHandling->Hoeveelheid) : old('Hoeveelheid') }}"
+                                    id="Hoeveelheid" required />
                                 <x-input-error :messages="$errors->get('Hoeveelheid')" class="mt-2" />
                             </div>
 
                             <div>
                                 <label class="mt-4" for="Kosten">Kosten:</label>
-                                <x-text-input class="text-black input" name="Kosten" id="Kosten" required />
+                                <x-text-input class="text-black input" name="Kosten"
+                                    value="{{ $malfunctionHandling ? old('Kosten', $malfunctionHandling->Kosten) : old('Kosten') }}"
+                                    id="Kosten" required />
                                 <x-input-error :messages="$errors->get('Kosten')" class="mt-2" />
                             </div>
 
@@ -139,7 +150,7 @@
                         </div>
 
                         <button class="button mt-4 w-1/5">
-                            Storing aanmaken
+                            Storing afhandelen
                         </button>
                     </form>
                 </div>

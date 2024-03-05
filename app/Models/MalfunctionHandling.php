@@ -27,6 +27,6 @@ class MalfunctionHandling extends Model
 
     public function Malfunctions()
     {
-        return $this->belongsTo(Malfunction::class);
+        return $this->belongsTo(Malfunction::class, 'malfunction_id');
     }
 }
