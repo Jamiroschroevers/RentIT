@@ -127,6 +127,15 @@
                                 <x-text-input class="text-black input" name="Kosten" id="Kosten" required />
                                 <x-input-error :messages="$errors->get('Kosten')" class="mt-2" />
                             </div>
+
+                            <div>
+                                <label for="image" class="text-gray-700">Image(s):</label>
+                                <input type="file" name="image[]" id="image" accept="image/*" multiple value="{{ old('image') }}" class="border p-2 rounded-md focus:ring focus:ring-blue-200 focus:outline-none input">
+
+                                @error('image')
+                                <div class="text-red-600">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <button class="button mt-4 w-1/5">
