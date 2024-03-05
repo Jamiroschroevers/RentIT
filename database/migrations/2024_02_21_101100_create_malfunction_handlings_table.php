@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('material')->nullable();
             $table->integer('mileage')->nullable();
             $table->integer('cost')->nullable();
-            $table->unsignedBigInteger('image_id')->nullable();
-            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade')->nullable();
             $table->unsignedBigInteger('malfunction_id')->nullable();
             $table->foreign('malfunction_id')->references('id')->on('malfunctions')->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
