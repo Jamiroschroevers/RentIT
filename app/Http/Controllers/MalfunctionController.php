@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Malfunction;
+use App\Models\MalfunctionHandling;
 use App\Models\Property;
 use App\Models\Status;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Rules\ExistingTenant;
 use Illuminate\Http\Request;
 
@@ -22,8 +24,27 @@ class MalfunctionController extends Controller
     public function indexAdmin()
     {
         $malfunctions = Malfunction::query()->orderBy('emergency', 'desc')->get();
+        $users = User::where('role_id', '3')->get();
 
-        return view('storing.StoringOverzicht', compact('malfunctions'));
+        return view('storing.StoringOverzicht', compact('malfunctions', 'users'));
+    }
+
+    public function storeAdmin(Request $request, Malfunction $malfunction)
+    {
+        request()->validate([
+            'monteur'       => ['required']
+        ]);
+
+        $storingHandeling = new MalfunctionHandling();
+        $storingHandeling->malfunction_id = $malfunction->id;
+        $storingHandeling->user_id = $request->monteur;
+        $storingHandeling->save();
+
+        // Status Updaten
+        $malfunction->status_id = Status::PLANNED;
+        $malfunction->save();
+
+        return redirect()->route('Astoring.index');
     }
 
     public function store(Request $request)

@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     //admin
     Route::middleware('admin')->group(function () {
         Route::get('AStoring', [MalfunctionController::class, 'indexAdmin'])->name('Astoring.index');
+        Route::post('AStoring/{malfunction}', [MalfunctionController::class, 'storeAdmin'])->name('Astoring.store');
     });
 });
 

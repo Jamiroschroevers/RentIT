@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('malfunction_handlings', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
-            $table->text('activities');
-            $table->string('material');
-            $table->integer('mileage');
-            $table->integer('cost');
+            $table->text('description')->nullable();
+            $table->text('activities')->nullable();
+            $table->string('material')->nullable();
+            $table->integer('mileage')->nullable();
+            $table->integer('cost')->nullable();
             $table->unsignedBigInteger('image_id')->nullable();
-            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade')->nullable();
             $table->unsignedBigInteger('malfunction_id')->nullable();
             $table->foreign('malfunction_id')->references('id')->on('malfunctions')->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
