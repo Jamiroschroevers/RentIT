@@ -47,6 +47,15 @@ class MalfunctionController extends Controller
         return redirect()->route('Astoring.index');
     }
 
+    public function updateAdmin(Malfunction $malfunction)
+    {
+        // Status Updaten
+        $malfunction->status_id = Status::PLANNED;
+        $malfunction->save();
+
+        return redirect()->route('Astoring.index');
+    }
+
     public function store(Request $request)
     {
         request()->validate([

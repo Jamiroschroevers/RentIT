@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Role;
 
-class Monteur
+class MonteurAdmin
 {
     /**
      * Handle an incoming request.
@@ -21,7 +21,7 @@ class Monteur
             return redirect()->route('login');
         }
 
-        if (!boolval(Auth::user()->role_id === Role::MONTEUR)) {
+        if (!boolval(Auth::user()->role_id != Role::HELPDESK)) {
             return redirect()->route('dashboard');
         }
 
