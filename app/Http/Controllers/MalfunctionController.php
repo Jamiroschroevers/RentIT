@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Workorder;
 use App\Rules\ExistingTenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MalfunctionController extends Controller
 {
@@ -25,9 +26,13 @@ class MalfunctionController extends Controller
     public function indexAdmin()
     {
         $malfunctions = Malfunction::query()->orderBy('emergency', 'desc')->get();
-        $users        = User::where('role_id', '3')->get();
+        $malfunctionMonteur = Malfunction::whereHas('MalfunctionsHandling', function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        })->orderBy('emergency', 'desc')->get();
 
-        return view('storing.StoringOverzicht', compact('malfunctions', 'users'));
+        $users = User::where('role_id', '3')->get();
+
+        return view('storing.StoringOverzicht', compact('malfunctions', 'users', 'malfunctionMonteur'));
     }
 
     public function storeAdmin(Request $request, Malfunction $malfunction)

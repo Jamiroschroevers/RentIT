@@ -44,7 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::post('AStoring/{malfunction}', [MalfunctionController::class, 'storeAdmin'])->name('Astoring.store');
         Route::put('AStoring/{malfunction}', [MalfunctionController::class, 'updateAdmin'])->name('Astoring.update');
         Route::get('StoringAfhandelen/{malfunction}', [MalfunctionHandlingController::class, 'create'])->name('StoringH.create');
-        Route::post('StoringAfhandelen', [MalfunctionHandlingController::class, 'store'])->name('StoringH.store');
+        Route::post('StoringAfhandelen/{malfunction}', [MalfunctionHandlingController::class, 'store'])->name('StoringH.store');
+        Route::put('StoringAfhandelen/{malfunctionHandling}', [MalfunctionHandlingController::class, 'update'])->name('StoringH.update');
     });
 });
 
