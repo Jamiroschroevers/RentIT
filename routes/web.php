@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\MalfunctionController;
+use App\Http\Controllers\MalfunctionHandlingController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Malfunction;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\TenantController;
@@ -34,10 +34,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-address/{postcode}', [PropertyController::class, 'getAddress']);
     Route::post('/save_property/{property}', [PropertyController::class, 'save_property']);
 
-    //admin
-    Route::middleware('admin')->group(function () {
+    //admin and monteur
+    Route::middleware('MonteurAdmin')->group(function () {
         Route::get('AStoring', [MalfunctionController::class, 'indexAdmin'])->name('Astoring.index');
         Route::post('AStoring/{malfunction}', [MalfunctionController::class, 'storeAdmin'])->name('Astoring.store');
+        Route::put('AStoring/{malfunction}', [MalfunctionController::class, 'updateAdmin'])->name('Astoring.update');
+        Route::get('StoringAfhandelen/{malfunction}', [MalfunctionHandlingController::class, 'create'])->name('StoringH.create');
+        Route::post('StoringAfhandelen', [MalfunctionHandlingController::class, 'store'])->name('StoringH.store');
     });
 });
 
