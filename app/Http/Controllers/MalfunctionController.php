@@ -25,10 +25,13 @@ class MalfunctionController extends Controller
 
     public function indexAdmin()
     {
-        $malfunctions = Malfunction::query()->orderBy('emergency', 'desc')->get();
+        $malfunctions       = Malfunction::query()
+                                         ->orderBy('emergency', 'desc')
+                                         ->get();
         $malfunctionMonteur = Malfunction::whereHas('MalfunctionsHandling', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })->orderBy('emergency', 'desc')->get();
+        })->orderBy('emergency', 'desc')
+          ->whereIn('status_id', [4, 5])->get();
 
         $users = User::where('role_id', '3')->get();
 
@@ -49,13 +52,6 @@ class MalfunctionController extends Controller
         // Status Updaten
         $malfunction->status_id = Status::PLANNED;
         $malfunction->save();
-
-        //workorder
-        $workorder            = new Workorder();
-        $workorder->user_id   = $storingHandeling->user_id;
-        $workorder->MH_id     = $storingHandeling->id;
-        $workorder->tenant_id = $malfunction->tenant_id;
-        $workorder->save();
 
         return redirect()->route('Astoring.index');
     }

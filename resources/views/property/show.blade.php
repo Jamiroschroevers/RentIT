@@ -79,7 +79,9 @@
                                 <x-primary-button class="">Huurder toevoegenn</x-primary-button>
                             </a>
                         @else
-                            <p class="m-0">{{ $property->tenant_id }}</p>
+                            <a href="{{ route('tenant.show', $property) }}">
+                                <p class="m-0">{{ $property->Tenants->firstname }} {{ $property->Tenants->lastname }}</p>
+                            </a>
                         @endif
                     </div>
                     <div id="error-message" class="text-red-700 mt-2"></div>
