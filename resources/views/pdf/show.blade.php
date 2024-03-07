@@ -127,3 +127,8 @@
         </div>
     </body>
 </html>
+<script>
+    window.onload = function() {
+        window.location.href = {{ route('workorder.index') }};
+    };
+</script>

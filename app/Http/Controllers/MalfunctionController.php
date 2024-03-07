@@ -30,8 +30,7 @@ class MalfunctionController extends Controller
                                          ->get();
         $malfunctionMonteur = Malfunction::whereHas('MalfunctionsHandling', function ($query) {
             $query->where('user_id', Auth::user()->id);
-        })->orderBy('emergency', 'desc')
-          ->whereIn('status_id', [4, 5])->get();
+        })->orderBy('emergency', 'desc')->get();
 
         $users = User::where('role_id', '3')->get();
 

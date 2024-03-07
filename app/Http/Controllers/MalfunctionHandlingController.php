@@ -62,7 +62,6 @@ class MalfunctionHandlingController extends Controller
         $malfunction->save();
 
         //workorder
-        dd('jhi');
         $workorder            = new Workorder();
         $workorder->user_id   = $malfunction->user_id;
         $workorder->MH_id     = $malfunctionHandling->id;

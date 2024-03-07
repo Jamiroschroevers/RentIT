@@ -42,9 +42,7 @@ class WorkorderController extends Controller
 
         $pdf = PDF::loadView('pdf.show', compact('data'));
 
-        $pdf->download('werkbon.pdf');
-
-        return redirect()->route('workorder.index');
+        return $pdf->download('werkbon.pdf');
     }
 
     public function show($id)
